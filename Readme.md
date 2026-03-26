@@ -1,108 +1,54 @@
-🦷 Sistema de Gestão para Clínica Odontológica (Frontend)
-📌 Sobre o Projeto
+# OdontoSaaS - Sistema de Gestão Odontológica
 
-Este projeto é um frontend de um sistema de gestão para clínicas odontológicas, desenvolvido com foco em produtividade, organização e experiência do usuário.
+Este é um sistema frontend moderno para gestão de clínicas odontológicas, desenvolvido com React, TypeScript e TailwindCSS.
 
-A aplicação simula um ambiente real de uso, permitindo o gerenciamento de pacientes, consultas, tratamentos e equipe clínica.
+## 🚀 Tecnologias Utilizadas
 
-⚠️ Este repositório contém apenas o frontend. O backend será desenvolvido separadamente.
+- **React 19** com **Vite**
+- **TypeScript** para tipagem estática
+- **TailwindCSS 4** para estilização utilitária
+- **React Router DOM** para navegação
+- **React Query (TanStack Query)** para gerenciamento de estado assíncrono e cache
+- **Zustand** para estado global (Autenticação)
+- **Lucide React** para ícones
+- **Motion** para animações
+- **Axios** configurado para futuras integrações
 
-🚀 Tecnologias Utilizadas
-React
-TypeScript
-Vite
-TailwindCSS
-React Router DOM
-Axios
-React Query / Zustand (opcional)
-🎨 Funcionalidades
-🔐 Autenticação (Mock)
-Login de usuário (Recepcionista / Dentista)
-Cadastro de usuário
-Simulação de autenticação (sem backend)
-📊 Dashboard
-Indicadores do dia:
-Pacientes atendidos
-Aguardando atendimento
-Em atendimento
-Tratamentos ativos
-👤 Pacientes
-Cadastro de pacientes
-Listagem completa
-Busca por CPF
-Visualização de dados
-📅 Agenda
-Visualização de consultas
-Organização por data
-Criação de novas consultas
-🦷 Consultas
-Listagem de consultas
-Status:
-Agendada
-Em andamento
-Finalizada
-🧾 Tratamentos
-Listagem de tratamentos
-Status:
-Aprovado
-Em andamento
-Enviado
-Reprovado
-👨‍⚕️ Equipe Clínica
-Visualização de profissionais
-Cadastro de membros da equipe
-💰 Financeiro
-Dashboard financeiro (mock)
-Relatórios simples
-🧩 Estrutura do Projeto
-src/
-  components/
-  pages/
-  layouts/
-  routes/
-  services/
-  hooks/
-  types/
-  mocks/
-🔌 Integração com Backend
+## 🏗️ Estrutura do Projeto
 
-O projeto está preparado para integração futura com API REST:
+- `/src/components`: Componentes reutilizáveis (Button, Input, Card, etc.)
+- `/src/pages`: Páginas da aplicação (Dashboard, Pacientes, Login)
+- `/src/layouts`: Layouts estruturais (DashboardLayout, AuthLayout)
+- `/src/routes`: Configuração de rotas
+- `/src/services`: Serviços de API (simulados com mocks)
+- `/src/hooks`: Hooks customizados para lógica de negócio
+- `/src/types`: Definições de tipos TypeScript
+- `/src/mocks`: Dados simulados para desenvolvimento
+- `/src/store`: Gerenciamento de estado global com Zustand
 
-Axios configurado com baseURL
-Services separados por domínio (ex: patientService.ts)
-Hooks simulando consumo de API
-📱 Responsividade
-Layout responsivo
-Sidebar colapsável
-Adaptado para desktop e mobile
-▶️ Como Rodar o Projeto
-# Clone o repositório
-git clone https://github.com/SrGabrielF/OdontoTrack
+## ✨ Funcionalidades Implementadas
 
-# Acesse a pasta
-cd seu-repo
+- **Autenticação Mock**: Tela de login com seleção de perfil (Dentista/Recepcionista).
+- **Dashboard Principal**: Cards de indicadores, agenda do dia e resumo financeiro.
+- **Gestão de Pacientes**: Listagem completa com busca e formatação de dados (CPF).
+- **Design Responsivo**: Sidebar colapsável e layout adaptável para diferentes telas.
+- **UI Moderna**: Estilo SaaS com sombras suaves, tipografia limpa e estados interativos.
 
-# Instale as dependências
-npm install
+## 🛠️ Como Executar
 
-# Rode o projeto
-npm run dev
-🎯 Objetivo
+1. Instale as dependências:
+   ```bash
+   npm install
+   ```
 
-Este projeto tem como objetivo:
+2. Inicie o servidor de desenvolvimento:
+   ```bash
+   npm run dev
+   ```
 
-Simular um sistema real de clínica
-Servir como base para integração fullstack
-Demonstrar boas práticas de frontend moderno
-📄 Licença
+## 🔌 Integração com API
 
-Este projeto é apenas para fins educacionais.
+O sistema já está estruturado para receber uma API REST. Os serviços em `src/services` utilizam uma instância do Axios e podem ser facilmente alterados para apontar para um backend real, apenas trocando a implementação do `mockApi` para chamadas reais do `api`.
 
-👨‍💻 Autor
-
-Desenvolvido por Gabriel Faria
-
-💡 Observações
-Os dados exibidos são mockados
-Não há persistência de dados
-Backend será integrado futuramente
+---
+Desenvolvido com ❤️ para clínicas modernas.

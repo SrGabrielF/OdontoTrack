@@ -3,31 +3,45 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Stethoscope, Mail, Lock, UserRound, UserPlus } from 'lucide-react';
 import { Button } from '../components/Button';
 import { Input } from '../components/Input';
-import { useAuthStore } from '../store/useAuthStore';
+import { useAuthStore, UserRole } from '../store/useAuthStore';
 import { cn } from '../lib/utils';
 
 export const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState<'receptionist' | 'dentist'>('receptionist');
+  const [role, setRole] = useState<UserRole>('receptionist');
   const [isLoading, setIsLoading] = useState(false);
-  const login = useAuthStore((state) => state.login);
+  const setAuth = useAuthStore((state) => state.setAuth);
   const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    // Simulate API call
-    setTimeout(() => {
-      login(email, role);
-      setIsLoading(false);
+
+    try {
+      // In a real app, this would be a call to authService.login(email, password, role)
+      // which returns { user, token }
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      const mockUser = {
+        id: '1',
+        name: 'Dr Batman',
+        email,
+        role,
+      };
+      const mockToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...';
+
+      setAuth(mockUser, mockToken);
       navigate('/');
-    }, 1000);
+    } catch (error) {
+      console.error('Login failed:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <div className="min-h-screen flex">
-      {/* Left Side - Image */}
       <div className="hidden lg:block lg:w-1/2 relative">
         <img
           src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&q=80&w=2070"
@@ -45,7 +59,6 @@ export const LoginPage = () => {
         </div>
       </div>
 
-      {/* Right Side - Form */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-slate-50">
         <div className="max-w-md w-full space-y-8">
           <div className="text-center">
@@ -58,6 +71,7 @@ export const LoginPage = () => {
 
           <div className="flex p-1 bg-slate-200 rounded-xl">
             <button
+              type="button"
               onClick={() => setRole('receptionist')}
               className={cn(
                 'flex-1 flex items-center justify-center gap-2 py-2.5 text-sm font-medium rounded-lg transition-all',
@@ -68,6 +82,7 @@ export const LoginPage = () => {
               Sou Recepcionista
             </button>
             <button
+              type="button"
               onClick={() => setRole('dentist')}
               className={cn(
                 'flex-1 flex items-center justify-center gap-2 py-2.5 text-sm font-medium rounded-lg transition-all',

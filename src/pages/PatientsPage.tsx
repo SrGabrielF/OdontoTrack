@@ -1,3 +1,4 @@
+import React from 'react';
 import { Search, Plus, Filter, MoreHorizontal, Eye, Edit2 } from 'lucide-react';
 import { Card } from '../components/Card';
 import { Button } from '../components/Button';
@@ -10,16 +11,16 @@ export const PatientsPage = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-slate-900">Pacientes</h1>
           <p className="text-slate-500">Gerencie todos os pacientes cadastrados na clínica.</p>
         </div>
-        <Button className="gap-2">
+        <Button className="gap-2 w-full sm:w-auto">
           <Plus size={18} />
           Novo Paciente
         </Button>
-      </div>
+      </header>
 
       <Card>
         <div className="flex flex-col md:flex-row gap-4 mb-6">
@@ -29,21 +30,21 @@ export const PatientsPage = () => {
               icon={<Search size={18} />}
             />
           </div>
-          <Button variant="outline" className="gap-2">
+          <Button variant="outline" className="gap-2 w-full md:w-auto">
             <Filter size={18} />
             Filtros
           </Button>
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="w-full text-left">
+        <div className="overflow-x-auto -mx-6">
+          <table className="w-full text-left min-w-[800px]">
             <thead>
               <tr className="text-xs font-semibold text-slate-400 uppercase tracking-wider border-b border-slate-100">
-                <th className="pb-4 pl-4">Paciente</th>
-                <th className="pb-4">CPF</th>
-                <th className="pb-4">Contato</th>
-                <th className="pb-4">Cadastro</th>
-                <th className="pb-4 text-right pr-4">Ações</th>
+                <th className="pb-4 px-6">Paciente</th>
+                <th className="pb-4 px-6">CPF</th>
+                <th className="pb-4 px-6">Contato</th>
+                <th className="pb-4 px-6">Cadastro</th>
+                <th className="pb-4 px-6 text-right">Ações</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-50">
@@ -54,7 +55,7 @@ export const PatientsPage = () => {
               ) : (
                 patients?.map((patient) => (
                   <tr key={patient.id} className="group hover:bg-slate-50 transition-colors">
-                    <td className="py-4 pl-4">
+                    <td className="py-4 px-6">
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center text-sm font-bold border border-slate-200">
                           {patient.name.split(' ').map(n => n[0]).join('').substring(0, 2)}
@@ -65,18 +66,18 @@ export const PatientsPage = () => {
                         </div>
                       </div>
                     </td>
-                    <td className="py-4 text-sm text-slate-600">{formatCPF(patient.cpf)}</td>
-                    <td className="py-4 text-sm text-slate-600">{patient.phone}</td>
-                    <td className="py-4 text-sm text-slate-600">{new Date(patient.createdAt).toLocaleDateString('pt-BR')}</td>
-                    <td className="py-4 text-right pr-4">
+                    <td className="py-4 px-6 text-sm text-slate-600">{formatCPF(patient.cpf)}</td>
+                    <td className="py-4 px-6 text-sm text-slate-600">{patient.phone}</td>
+                    <td className="py-4 px-6 text-sm text-slate-600">{new Date(patient.createdAt).toLocaleDateString('pt-BR')}</td>
+                    <td className="py-4 px-6 text-right">
                       <div className="flex items-center justify-end gap-2">
-                        <button className="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all">
+                        <button className="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all" title="Visualizar">
                           <Eye size={18} />
                         </button>
-                        <button className="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all">
+                        <button className="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all" title="Editar">
                           <Edit2 size={18} />
                         </button>
-                        <button className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-all">
+                        <button className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-all" title="Mais opções">
                           <MoreHorizontal size={18} />
                         </button>
                       </div>
