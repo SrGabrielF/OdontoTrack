@@ -77,7 +77,7 @@ Sidebar colapsável
 Adaptado para desktop e mobile
 ▶️ Como Rodar o Projeto
 # Clone o repositório
-git clone https://github.com/seu-usuario/seu-repo.git
+git clone https://github.com/SrGabrielF/OdontoTrack
 
 # Acesse a pasta
 cd seu-repo
