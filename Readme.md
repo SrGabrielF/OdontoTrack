@@ -1,4 +1,4 @@
-# OdontoSaaS - Sistema de Gestão Odontológica
+# OdontoTrack - Sistema de Gestão Odontológica
 
 Este é um sistema frontend moderno para gestão de clínicas odontológicas, desenvolvido com React, TypeScript e TailwindCSS.
 
@@ -28,7 +28,8 @@ Este é um sistema frontend moderno para gestão de clínicas odontológicas, de
 
 ## ✨ Funcionalidades Implementadas
 
-- **Autenticação Mock**: Tela de login com seleção de perfil (Dentista/Recepcionista).
+- **Controle de Acesso (RBAC)**: Diferenciação de permissões entre Dentista e Recepcionista.
+- **Autenticação Mock**: Tela de login com seleção de perfil.
 - **Dashboard Principal**: Cards de indicadores, agenda do dia e resumo financeiro.
 - **Gestão de Pacientes**: Listagem completa com busca e formatação de dados (CPF).
 - **Design Responsivo**: Sidebar colapsável e layout adaptável para diferentes telas.
@@ -51,4 +52,4 @@ Este é um sistema frontend moderno para gestão de clínicas odontológicas, de
 O sistema já está estruturado para receber uma API REST. Os serviços em `src/services` utilizam uma instância do Axios e podem ser facilmente alterados para apontar para um backend real, apenas trocando a implementação do `mockApi` para chamadas reais do `api`.
 
 ---
-Desenvolvido com ❤️ para clínicas modernas.
+Desenvolvido por Gabriel Faria/David Gabriel

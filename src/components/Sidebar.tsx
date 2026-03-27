@@ -11,7 +11,8 @@ import {
   FileText, 
   PieChart,
   LogOut,
-  ChevronRight
+  ChevronRight,
+  Lock
 } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { useAuthStore } from '../store/useAuthStore';
@@ -20,33 +21,34 @@ const menuItems = [
   {
     title: 'Recepção',
     items: [
-      { name: 'Dashboard', icon: LayoutDashboard, path: '/' },
-      { name: 'Novo Paciente', icon: UserPlus, path: '/pacientes/novo' },
-      { name: 'Agenda', icon: Calendar, path: '/agenda' },
-      { name: 'Lista de Pacientes', icon: Users, path: '/pacientes' },
-      { name: 'Painel de Consultas', icon: ClipboardList, path: '/consultas' },
-      { name: 'Painel de Tratamentos', icon: Stethoscope, path: '/tratamentos' },
+      { name: 'Dashboard', icon: LayoutDashboard, path: '/', roles: ['receptionist', 'dentist'] },
+      { name: 'Novo Paciente', icon: UserPlus, path: '/pacientes/novo', roles: ['receptionist'] },
+      { name: 'Agenda', icon: Calendar, path: '/agenda', roles: ['receptionist'] },
+      { name: 'Lista de Pacientes', icon: Users, path: '/pacientes', roles: ['receptionist', 'dentist'] },
+      { name: 'Painel de Consultas', icon: ClipboardList, path: '/consultas', roles: ['receptionist', 'dentist'] },
+      { name: 'Painel de Tratamentos', icon: Stethoscope, path: '/tratamentos', roles: ['dentist'] },
     ],
   },
   {
     title: 'Gestão Interna',
     items: [
-      { name: 'Histórico Geral', icon: History, path: '/historico' },
-      { name: 'Equipe Clínica', icon: UserRound, path: '/equipe' },
+      { name: 'Histórico Geral', icon: History, path: '/historico', roles: ['dentist'] },
+      { name: 'Tratamento e Consultas', icon: ClipboardList, path: '/tratamento-consultas', roles: ['dentist'] },
+      { name: 'Equipe Clínica', icon: UserRound, path: '/equipe', roles: ['dentist'] },
     ],
   },
   {
     title: 'Financeiro',
     items: [
-      { name: 'Relatórios', icon: FileText, path: '/financeiro/relatorios' },
-      { name: 'Dashboard Financeiro', icon: PieChart, path: '/financeiro' },
+      { name: 'Relatórios', icon: FileText, path: '/financeiro/relatorios', roles: ['dentist'] },
+      { name: 'Dashboard Financeiro', icon: PieChart, path: '/financeiro', roles: ['dentist'] },
     ],
   },
 ];
 
 export const Sidebar = () => {
   const location = useLocation();
-  const logout = useAuthStore((state) => state.logout);
+  const { user, logout } = useAuthStore();
 
   return (
     <aside className="w-64 bg-white border-r border-slate-200 flex flex-col h-screen sticky top-0 overflow-y-auto">
@@ -54,7 +56,7 @@ export const Sidebar = () => {
         <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white">
           <Stethoscope size={24} />
         </div>
-        <span className="text-xl font-bold text-slate-900 tracking-tight">OdontoSaaS</span>
+        <span className="text-xl font-bold text-slate-900 tracking-tight">OdontoTrack</span>
       </div>
 
       <nav className="flex-1 px-4 py-4 space-y-8">
@@ -66,6 +68,24 @@ export const Sidebar = () => {
             <div className="space-y-1">
               {section.items.map((item) => {
                 const isActive = location.pathname === item.path;
+                const hasPermission = item.roles.includes(user?.role || '');
+                
+                if (!hasPermission) {
+                  return (
+                    <div
+                      key={item.name}
+                      className="flex items-center justify-between px-4 py-2.5 text-sm font-medium rounded-lg text-slate-300 cursor-not-allowed opacity-60"
+                      title="Acesso restrito"
+                    >
+                      <div className="flex items-center gap-3">
+                        <item.icon size={18} className="text-slate-300" />
+                        {item.name}
+                      </div>
+                      <Lock size={12} className="text-slate-300" />
+                    </div>
+                  );
+                }
+
                 return (
                   <Link
                     key={item.name}

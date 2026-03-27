@@ -1,8 +1,19 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { DashboardLayout } from '../layouts/DashboardLayout';
 import { LoginPage } from '../pages/LoginPage';
+import { SignupPage } from '../pages/SignupPage';
 import { DashboardPage } from '../pages/DashboardPage';
 import { PatientsPage } from '../pages/PatientsPage';
+import { PatientFormPage } from '../pages/PatientFormPage';
+import { AppointmentFormPage } from '../pages/AppointmentFormPage';
+import { TreatmentFormPage } from '../pages/TreatmentFormPage';
+import { TreatmentsPage } from '../pages/TreatmentsPage';
+import { AppointmentsPage } from '../pages/AppointmentsPage';
+import { AgendaPage } from '../pages/AgendaPage';
+import { StaffPage } from '../pages/StaffPage';
+import { ConsultationHistoryPage } from '../pages/ConsultationHistoryPage';
+import { TreatmentConsultationDetailsPage } from '../pages/TreatmentConsultationDetailsPage';
+import { ProtectedRoute } from '../components/ProtectedRoute';
 
 // Placeholder pages for other routes
 const Placeholder = ({ title }: { title: string }) => (
@@ -17,19 +28,32 @@ export const AppRoutes = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/cadastro" element={<LoginPage />} /> {/* Reusing login for demo */}
+        <Route path="/cadastro" element={<SignupPage />} />
         
         <Route element={<DashboardLayout />}>
-          <Route path="/" element={<DashboardPage />} />
-          <Route path="/pacientes" element={<PatientsPage />} />
-          <Route path="/pacientes/novo" element={<Placeholder title="Novo Paciente" />} />
-          <Route path="/agenda" element={<Placeholder title="Agenda" />} />
-          <Route path="/consultas" element={<Placeholder title="Painel de Consultas" />} />
-          <Route path="/tratamentos" element={<Placeholder title="Painel de Tratamentos" />} />
-          <Route path="/historico" element={<Placeholder title="Histórico Geral" />} />
-          <Route path="/equipe" element={<Placeholder title="Equipe Clínica" />} />
-          <Route path="/financeiro" element={<Placeholder title="Dashboard Financeiro" />} />
-          <Route path="/financeiro/relatorios" element={<Placeholder title="Relatórios Financeiros" />} />
+          <Route path="/" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
+          
+          {/* Pacientes */}
+          <Route path="/pacientes" element={<ProtectedRoute allowedRoles={['receptionist', 'dentist']}><PatientsPage /></ProtectedRoute>} />
+          <Route path="/pacientes/novo" element={<ProtectedRoute allowedRoles={['receptionist']}><PatientFormPage /></ProtectedRoute>} />
+          
+          {/* Agenda e Consultas */}
+          <Route path="/agenda" element={<ProtectedRoute allowedRoles={['receptionist']}><AgendaPage /></ProtectedRoute>} />
+          <Route path="/consultas" element={<ProtectedRoute allowedRoles={['receptionist', 'dentist']}><AppointmentsPage /></ProtectedRoute>} />
+          <Route path="/consultas/novo" element={<ProtectedRoute allowedRoles={['receptionist', 'dentist']}><AppointmentFormPage /></ProtectedRoute>} />
+          
+          {/* Tratamentos */}
+          <Route path="/tratamentos" element={<ProtectedRoute allowedRoles={['dentist']}><TreatmentsPage /></ProtectedRoute>} />
+          <Route path="/tratamentos/novo" element={<ProtectedRoute allowedRoles={['dentist']}><TreatmentFormPage /></ProtectedRoute>} />
+          
+          {/* Gestão Interna */}
+          <Route path="/historico" element={<ProtectedRoute allowedRoles={['dentist']}><ConsultationHistoryPage /></ProtectedRoute>} />
+          <Route path="/tratamento-consultas" element={<ProtectedRoute allowedRoles={['dentist']}><TreatmentConsultationDetailsPage /></ProtectedRoute>} />
+          <Route path="/equipe" element={<ProtectedRoute allowedRoles={['dentist']}><StaffPage /></ProtectedRoute>} />
+          
+          {/* Financeiro */}
+          <Route path="/financeiro" element={<ProtectedRoute allowedRoles={['dentist']}><Placeholder title="Dashboard Financeiro" /></ProtectedRoute>} />
+          <Route path="/financeiro/relatorios" element={<ProtectedRoute allowedRoles={['dentist']}><Placeholder title="Relatórios Financeiros" /></ProtectedRoute>} />
         </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />

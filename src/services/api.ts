@@ -46,22 +46,51 @@ api.interceptors.response.use(
  * Mock API for development purposes.
  * In a real production environment, this would be replaced by actual backend calls.
  */
+let localMockData: any = null;
+
+const getLocalMockData = async () => {
+  if (!localMockData) {
+    const data = await import('../mocks/data');
+    localMockData = {
+      patients: [...data.mockPatients],
+      appointments: [...data.mockAppointments],
+      treatments: [...data.mockTreatments],
+      staff: [...data.mockStaff],
+      financial: [...data.mockFinancial],
+    };
+  }
+  return localMockData;
+};
+
 export const mockApi = {
   get: async <T>(url: string): Promise<{ data: T }> => {
     await new Promise((resolve) => setTimeout(resolve, 500));
-    const data = await import('../mocks/data');
+    const data = await getLocalMockData();
     
-    if (url.includes('patients')) return { data: data.mockPatients as unknown as T };
-    if (url.includes('appointments')) return { data: data.mockAppointments as unknown as T };
-    if (url.includes('treatments')) return { data: data.mockTreatments as unknown as T };
-    if (url.includes('staff')) return { data: data.mockStaff as unknown as T };
-    if (url.includes('financial')) return { data: data.mockFinancial as unknown as T };
+    if (url.includes('patients')) return { data: data.patients as unknown as T };
+    if (url.includes('appointments')) return { data: data.appointments as unknown as T };
+    if (url.includes('treatments')) return { data: data.treatments as unknown as T };
+    if (url.includes('staff')) return { data: data.staff as unknown as T };
+    if (url.includes('financial')) return { data: data.financial as unknown as T };
     
     throw new Error('Endpoint not found in mock');
   },
-  post: async <T>(url: string, data: any): Promise<{ data: T }> => {
+  post: async <T>(url: string, payload: any): Promise<{ data: T }> => {
     await new Promise((resolve) => setTimeout(resolve, 800));
-    return { data: { ...data, id: Math.random().toString(36).substr(2, 9) } as T };
+    const data = await getLocalMockData();
+    const newItem = { 
+      ...payload, 
+      id: Math.random().toString(36).substr(2, 9),
+      createdAt: new Date().toISOString().split('T')[0]
+    };
+
+    if (url.includes('patients')) data.patients.push(newItem);
+    if (url.includes('appointments')) data.appointments.push(newItem);
+    if (url.includes('treatments')) data.treatments.push(newItem);
+    if (url.includes('staff')) data.staff.push(newItem);
+    if (url.includes('financial')) data.financial.push(newItem);
+
+    return { data: newItem as T };
   },
 };
 
