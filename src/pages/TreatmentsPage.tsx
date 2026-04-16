@@ -1,13 +1,16 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../store/useAuthStore';
-import { Search, Plus, MoreHorizontal, FileText, CheckCircle2, Clock, Send, XCircle, User } from 'lucide-react';
+import { Search, Plus, MoreHorizontal, FileText, CheckCircle2, Clock, Send, XCircle, User, Edit2, Trash2, Printer } from 'lucide-react';
 import { Card } from '../components/Card';
 import { Button } from '../components/Button';
 import { Input } from '../components/Input';
 import { Badge } from '../components/Badge';
+import { Dropdown } from '../components/Dropdown';
 import { formatCurrency, cn } from '../lib/utils';
 import { motion } from 'motion/react';
+
+import { useTreatments } from '../hooks/useTreatments';
 
 const stats = [
   { name: 'Aprovados', value: '10', icon: CheckCircle2, color: 'bg-emerald-500' },
@@ -16,14 +19,10 @@ const stats = [
   { name: 'Reprovados', value: '2', icon: XCircle, color: 'bg-rose-500' },
 ];
 
-const mockTreatments = [
-  { id: '1', patient: 'Maria Oliveira', procedures: '2 procedimento(s)', value: 430.00, date: '29/02/2024', status: 'Aprovado' },
-  { id: '2', patient: 'João Pedro Santos', procedures: '2 procedimento(s)', value: 2000.00, date: '04/03/2024', status: 'Enviado' },
-];
-
 export const TreatmentsPage = () => {
   const navigate = useNavigate();
   const { user } = useAuthStore();
+  const { data: treatments, isLoading } = useTreatments();
 
   const isDentist = user?.role === 'dentist';
 
@@ -89,41 +88,57 @@ export const TreatmentsPage = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-50">
-              {mockTreatments.map((item) => (
-                <tr key={item.id} className="group hover:bg-slate-50 transition-colors">
-                  <td className="py-4 px-6">
-                    <div 
-                      className="flex items-center gap-3 cursor-pointer group/name"
-                      onClick={() => navigate('/tratamento-consultas')}
-                    >
-                      <div className="w-8 h-8 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center group-hover/name:bg-indigo-100 transition-all">
-                        <User size={16} />
-                      </div>
-                      <span className="text-sm font-medium text-slate-900 group-hover/name:text-indigo-600 transition-colors">{item.patient}</span>
-                    </div>
-                  </td>
-                  <td className="py-4 px-6 text-sm text-slate-600">
-                    <div className="flex items-center gap-2">
-                      <FileText size={14} className="text-slate-400" />
-                      {item.procedures}
-                    </div>
-                  </td>
-                  <td className="py-4 px-6 text-sm font-bold text-emerald-600">
-                    {formatCurrency(item.value)}
-                  </td>
-                  <td className="py-4 px-6 text-sm text-slate-600">{item.date}</td>
-                  <td className="py-4 px-6">
-                    <Badge variant={item.status === 'Aprovado' ? 'success' : 'info'}>
-                      {item.status}
-                    </Badge>
-                  </td>
-                  <td className="py-4 px-6 text-right">
-                    <button className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-all">
-                      <MoreHorizontal size={18} />
-                    </button>
-                  </td>
+              {isLoading ? (
+                <tr>
+                  <td colSpan={6} className="py-8 text-center text-slate-500">Carregando tratamentos...</td>
                 </tr>
-              ))}
+              ) : (
+                treatments?.map((item) => (
+                  <tr key={item.id} className="group hover:bg-slate-50 transition-colors">
+                    <td className="py-4 px-6">
+                      <div 
+                        className="flex items-center gap-3 cursor-pointer group/name"
+                        onClick={() => navigate(`/pacientes/${item.patientId}`)}
+                      >
+                        <div className="w-8 h-8 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center group-hover/name:bg-indigo-100 transition-all">
+                          <User size={16} />
+                        </div>
+                        <span className="text-sm font-medium text-slate-900 group-hover/name:text-indigo-600 transition-colors">{item.patientName}</span>
+                      </div>
+                    </td>
+                    <td className="py-4 px-6 text-sm text-slate-600">
+                      <div className="flex items-center gap-2">
+                        <FileText size={14} className="text-slate-400" />
+                        {item.procedures?.length || 0} procedimento(s)
+                      </div>
+                    </td>
+                    <td className="py-4 px-6 text-sm font-bold text-emerald-600">
+                      {formatCurrency(item.value)}
+                    </td>
+                    <td className="py-4 px-6 text-sm text-slate-600">{new Date(item.date).toLocaleDateString('pt-BR')}</td>
+                    <td className="py-4 px-6">
+                      <Badge variant={item.status === 'Aprovado' ? 'success' : 'info'}>
+                        {item.status}
+                      </Badge>
+                    </td>
+                    <td className="py-4 px-6 text-right">
+                      <Dropdown
+                        trigger={
+                          <button className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-all">
+                            <MoreHorizontal size={18} />
+                          </button>
+                        }
+                        items={[
+                          { label: 'Ver Detalhes', icon: <FileText size={14} />, onClick: () => navigate(`/pacientes/${item.patientId}`) },
+                          { label: 'Imprimir', icon: <Printer size={14} />, onClick: () => console.log('Print', item.id) },
+                          { label: 'Editar', icon: <Edit2 size={14} />, onClick: () => console.log('Edit', item.id) },
+                          { label: 'Excluir', icon: <Trash2 size={14} />, onClick: () => console.log('Delete', item.id), variant: 'danger' },
+                        ]}
+                      />
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>

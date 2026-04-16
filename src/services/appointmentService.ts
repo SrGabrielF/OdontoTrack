@@ -23,6 +23,9 @@ export const appointmentService = {
   },
 
   async updateStatus(id: string, status: Appointment['status']): Promise<Appointment> {
+    if (USE_MOCK) {
+      return { id, status } as Appointment;
+    }
     const response = await api.patch<Appointment>(`/appointments/${id}/status`, { status });
     return response.data;
   },

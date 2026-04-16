@@ -59,12 +59,11 @@ export const DashboardPage = () => {
           </div>
           <div className="flex flex-wrap items-center gap-3 w-full lg:w-auto">
             <Button 
-              onClick={() => isReceptionist && navigate('/pacientes/novo')} 
-              className={cn(
-                "gap-2 flex-1 lg:flex-none",
-                !isReceptionist && "opacity-50 cursor-not-allowed"
-              )}
-              variant={isReceptionist ? "default" : "secondary"}
+              onClick={() => navigate('/pacientes/novo')} 
+              className="gap-2 flex-1 lg:flex-none"
+              variant={isReceptionist ? "primary" : "secondary"}
+              disabled={!isReceptionist}
+              title={!isReceptionist ? "Acesso restrito à Recepção" : ""}
             >
               <UserPlus size={18} />
               Novo Paciente
@@ -72,12 +71,14 @@ export const DashboardPage = () => {
             </Button>
 
             <Button 
-              onClick={() => isDentist && navigate('/tratamentos/novo')} 
-              variant="outline" 
+              onClick={() => navigate('/tratamentos/novo')} 
+              variant={isDentist ? "outline" : "secondary"}
               className={cn(
                 "gap-2 flex-1 lg:flex-none bg-white",
-                !isDentist && "opacity-50 cursor-not-allowed"
+                !isDentist && "bg-slate-200"
               )}
+              disabled={!isDentist}
+              title={!isDentist ? "Acesso restrito ao Dentista" : ""}
             >
               <FilePlus size={18} />
               Nova Ordem de Serviço
@@ -85,12 +86,14 @@ export const DashboardPage = () => {
             </Button>
 
             <Button 
-              onClick={() => isReceptionist && navigate('/agenda')} 
-              variant="outline" 
+              onClick={() => navigate('/agenda')} 
+              variant={isReceptionist ? "outline" : "secondary"}
               className={cn(
                 "gap-2 flex-1 lg:flex-none bg-white",
-                !isReceptionist && "opacity-50 cursor-not-allowed"
+                !isReceptionist && "bg-slate-200"
               )}
+              disabled={!isReceptionist}
+              title={!isReceptionist ? "Acesso restrito à Recepção" : ""}
             >
               <CalendarIcon size={18} />
               Visualizar agenda
@@ -173,7 +176,14 @@ export const DashboardPage = () => {
               <div className="flex-1 space-y-4">
                 <div className="flex items-center justify-between">
                   <h4 className="text-sm font-bold text-slate-900">Consultas (3)</h4>
-                  <Button variant="ghost" size="sm" className="text-indigo-600 hover:bg-indigo-50">Ver todos</Button>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="text-indigo-600 hover:bg-indigo-50"
+                    onClick={() => navigate('/consultas')}
+                  >
+                    Ver todos
+                  </Button>
                 </div>
                 <div className="space-y-3">
                   {[
@@ -181,7 +191,11 @@ export const DashboardPage = () => {
                     { time: '10:30', patient: 'João Pedro Santos', procedure: 'Avaliação', status: 'Aguardando' },
                     { time: '14:00', patient: 'Ana Carolina Lima', procedure: 'Restauração', status: 'Confirmado' },
                   ].map((apt, i) => (
-                    <div key={i} className="flex items-center gap-4 p-3 bg-slate-50 rounded-xl border border-slate-100 hover:border-indigo-200 transition-all cursor-pointer group">
+                    <div 
+                      key={i} 
+                      className="flex items-center gap-4 p-3 bg-slate-50 rounded-xl border border-slate-100 hover:border-indigo-200 transition-all cursor-pointer group"
+                      onClick={() => navigate('/consultas')}
+                    >
                       <div className="text-center min-w-[50px]">
                         <p className="text-xs font-bold text-indigo-600">{apt.time}</p>
                       </div>
@@ -201,6 +215,16 @@ export const DashboardPage = () => {
           <Card 
             title="Fluxo de atendimento" 
             subtitle="Pacientes em atendimento no momento"
+            headerAction={(
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="text-indigo-600 hover:bg-indigo-50"
+                onClick={() => navigate('/consultas')}
+              >
+                Ver todos
+              </Button>
+            )}
           >
             <div className="overflow-x-auto -mx-6">
               <table className="w-full text-left min-w-[500px]">
@@ -226,7 +250,7 @@ export const DashboardPage = () => {
                               "flex items-center gap-3 group/name cursor-pointer",
                               !isDentist && "opacity-60 cursor-not-allowed"
                             )}
-                            onClick={() => isDentist && navigate('/tratamento-consultas')}
+                            onClick={() => isDentist && navigate(`/pacientes/${apt.patientId}`)}
                             title={!isDentist ? "Acesso restrito ao Dentista" : ""}
                           >
                             <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 border border-slate-200 group-hover/name:bg-indigo-50 group-hover/name:text-indigo-600 group-hover/name:border-indigo-200 transition-all">
@@ -249,7 +273,7 @@ export const DashboardPage = () => {
                               "text-indigo-600",
                               !isDentist && "opacity-50 cursor-not-allowed"
                             )}
-                            onClick={() => isDentist && navigate('/tratamento-consultas')}
+                            onClick={() => isDentist && navigate(`/pacientes/${apt.patientId}`)}
                           >
                             Ver Detalhes
                             {!isDentist && <Lock size={12} className="ml-1" />}

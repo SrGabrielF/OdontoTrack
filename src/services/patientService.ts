@@ -32,11 +32,18 @@ export const patientService = {
   },
 
   async update(id: string, patient: Partial<Patient>): Promise<Patient> {
+    if (USE_MOCK) {
+      // Simple mock update
+      return { id, ...patient } as Patient;
+    }
     const response = await api.patch<Patient>(`/patients/${id}`, patient);
     return response.data;
   },
 
   async delete(id: string): Promise<void> {
+    if (USE_MOCK) {
+      return;
+    }
     await api.delete(`/patients/${id}`);
   },
 };

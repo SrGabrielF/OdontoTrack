@@ -1,10 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../store/useAuthStore';
-import { Search, Plus, Filter, MoreHorizontal, Eye, Edit2, Lock } from 'lucide-react';
+import { Search, Plus, Filter, MoreHorizontal, Eye, Edit2, Lock, Trash2, FileText } from 'lucide-react';
 import { Card } from '../components/Card';
 import { Button } from '../components/Button';
 import { Input } from '../components/Input';
+import { Dropdown } from '../components/Dropdown';
 import { usePatients } from '../hooks/usePatients';
 import { formatCPF, cn } from '../lib/utils';
 
@@ -23,12 +24,11 @@ export const PatientsPage = () => {
           <p className="text-slate-500">Gerencie todos os pacientes cadastrados na clínica.</p>
         </div>
         <Button 
-          onClick={() => isReceptionist && navigate('/pacientes/novo')} 
-          className={cn(
-            "gap-2 w-full sm:w-auto",
-            !isReceptionist && "opacity-50 cursor-not-allowed"
-          )}
-          variant={isReceptionist ? "default" : "secondary"}
+          onClick={() => navigate('/pacientes/novo')} 
+          className="gap-2 w-full sm:w-auto"
+          variant={isReceptionist ? "primary" : "secondary"}
+          disabled={!isReceptionist}
+          title={!isReceptionist ? "Acesso restrito à Recepção" : ""}
         >
           <Plus size={18} />
           Novo Paciente
@@ -75,7 +75,7 @@ export const PatientsPage = () => {
                           "flex items-center gap-3 group/name cursor-pointer",
                           isReceptionist && "opacity-60 cursor-not-allowed"
                         )}
-                        onClick={() => !isReceptionist && navigate('/tratamento-consultas')}
+                        onClick={() => !isReceptionist && navigate(`/pacientes/${patient.id}`)}
                         title={isReceptionist ? "Acesso restrito ao Dentista" : ""}
                       >
                         <div className="w-10 h-10 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center text-sm font-bold border border-slate-200 group-hover/name:bg-indigo-50 group-hover/name:text-indigo-600 group-hover/name:border-indigo-200 transition-all">
@@ -93,7 +93,7 @@ export const PatientsPage = () => {
                     <td className="py-4 px-6 text-right">
                       <div className="flex items-center justify-end gap-2">
                         <button 
-                          onClick={() => !isReceptionist && navigate('/tratamento-consultas')}
+                          onClick={() => !isReceptionist && navigate(`/pacientes/${patient.id}`)}
                           className={cn(
                             "p-2 rounded-lg transition-all",
                             !isReceptionist 
@@ -105,6 +105,7 @@ export const PatientsPage = () => {
                           {isReceptionist ? <Lock size={18} /> : <Eye size={18} />}
                         </button>
                         <button 
+                          onClick={() => isReceptionist && navigate('/pacientes/novo')}
                           className={cn(
                             "p-2 rounded-lg transition-all",
                             isReceptionist 
@@ -115,9 +116,18 @@ export const PatientsPage = () => {
                         >
                           {isReceptionist ? <Edit2 size={18} /> : <Lock size={18} />}
                         </button>
-                        <button className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-all" title="Mais opções">
-                          <MoreHorizontal size={18} />
-                        </button>
+                        <Dropdown
+                          trigger={
+                            <button className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-all" title="Mais opções">
+                              <MoreHorizontal size={18} />
+                            </button>
+                          }
+                          items={[
+                            { label: 'Prontuário', icon: <FileText size={14} />, onClick: () => navigate(`/pacientes/${patient.id}`) },
+                            { label: 'Nova Consulta', icon: <Plus size={14} />, onClick: () => console.log('New appointment', patient.id) },
+                            { label: 'Excluir', icon: <Trash2 size={14} />, onClick: () => console.log('Delete', patient.id), variant: 'danger' },
+                          ]}
+                        />
                       </div>
                     </td>
                   </tr>

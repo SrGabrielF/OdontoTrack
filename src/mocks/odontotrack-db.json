@@ -1,0 +1,324 @@
+{
+  "patients": [
+    {
+      "id": 1,
+      "name": "Maria Oliveira Silva",
+      "cpf": "123.456.789-01",
+      "phone": "(11) 98765-4321",
+      "email": "maria.silva@email.com",
+      "birthDate": "1985-05-20",
+      "createdAt": "2024-01-10T10:00:00Z"
+    },
+    {
+      "id": 2,
+      "name": "João Pedro Santos",
+      "cpf": "987.654.321-02",
+      "phone": "(11) 91234-5678",
+      "email": "joao.santos@email.com",
+      "birthDate": "1992-08-15",
+      "createdAt": "2024-01-12T14:30:00Z"
+    },
+    {
+      "id": 3,
+      "name": "Ana Carolina Lima",
+      "cpf": "456.789.123-03",
+      "phone": "(11) 95555-1234",
+      "email": "ana.lima@email.com",
+      "birthDate": "1978-12-03",
+      "createdAt": "2024-01-15T09:15:00Z"
+    },
+    {
+      "id": 4,
+      "name": "Ricardo Augusto Pereira",
+      "cpf": "321.654.987-04",
+      "phone": "(21) 98888-7777",
+      "email": "ricardo.pereira@email.com",
+      "birthDate": "1980-03-25",
+      "createdAt": "2024-01-20T11:00:00Z"
+    },
+    {
+      "id": 5,
+      "name": "Beatriz Souza Machado",
+      "cpf": "159.357.456-05",
+      "phone": "(31) 97777-6666",
+      "email": "beatriz.machado@email.com",
+      "birthDate": "1995-07-12",
+      "createdAt": "2024-02-01T16:45:00Z"
+    },
+    {
+      "id": 6,
+      "name": "Carlos Eduardo Costa",
+      "cpf": "753.159.852-06",
+      "phone": "(41) 96666-5555",
+      "email": "carlos.costa@email.com",
+      "birthDate": "1988-11-30",
+      "createdAt": "2024-02-05T08:30:00Z"
+    },
+    {
+      "id": 7,
+      "name": "Fernanda Ribeiro",
+      "cpf": "852.963.741-07",
+      "phone": "(51) 94444-3333",
+      "email": "fernanda.ribeiro@email.com",
+      "birthDate": "1990-01-18",
+      "createdAt": "2024-02-10T13:20:00Z"
+    },
+    {
+      "id": 8,
+      "name": "Gabriel Ferreira",
+      "cpf": "369.258.147-08",
+      "phone": "(61) 93333-2222",
+      "email": "gabriel.ferreira@email.com",
+      "birthDate": "2000-09-05",
+      "createdAt": "2024-02-15T10:10:00Z"
+    },
+    {
+      "id": 9,
+      "name": "Juliana Martins",
+      "cpf": "147.258.369-09",
+      "phone": "(71) 92222-1111",
+      "email": "juliana.martins@email.com",
+      "birthDate": "1983-06-28",
+      "createdAt": "2024-02-20T15:50:00Z"
+    },
+    {
+      "id": 10,
+      "name": "Paulo Roberto Almeida",
+      "cpf": "258.147.369-10",
+      "phone": "(81) 91111-0000",
+      "email": "paulo.almeida@email.com",
+      "birthDate": "1975-04-14",
+      "createdAt": "2024-02-25T09:00:00Z"
+    }
+  ],
+  "appointments": [
+    {
+      "id": 1,
+      "patientId": 1,
+      "date": "2024-03-20",
+      "time": "09:00",
+      "status": "finished",
+      "dentistName": "Dr. Carlos Silva"
+    },
+    {
+      "id": 2,
+      "patientId": 2,
+      "date": "2024-03-20",
+      "time": "10:30",
+      "status": "finished",
+      "dentistName": "Dra. Ana Santos"
+    },
+    {
+      "id": 3,
+      "patientId": 3,
+      "date": "2024-03-20",
+      "time": "14:00",
+      "status": "finished",
+      "dentistName": "Dr. Roberto Lima"
+    },
+    {
+      "id": 4,
+      "patientId": 4,
+      "date": "2024-03-21",
+      "time": "08:00",
+      "status": "scheduled",
+      "dentistName": "Dr. Carlos Silva"
+    },
+    {
+      "id": 5,
+      "patientId": 5,
+      "date": "2024-03-21",
+      "time": "11:00",
+      "status": "scheduled",
+      "dentistName": "Dra. Ana Santos"
+    },
+    {
+      "id": 6,
+      "patientId": 6,
+      "date": "2024-03-22",
+      "time": "15:30",
+      "status": "scheduled",
+      "dentistName": "Dr. Roberto Lima"
+    },
+    {
+      "id": 7,
+      "patientId": 1,
+      "date": "2024-03-25",
+      "time": "10:00",
+      "status": "scheduled",
+      "dentistName": "Dr. Carlos Silva"
+    },
+    {
+      "id": 8,
+      "patientId": 7,
+      "date": "2024-03-26",
+      "time": "16:00",
+      "status": "scheduled",
+      "dentistName": "Dra. Ana Santos"
+    },
+    {
+      "id": 9,
+      "patientId": 8,
+      "date": "2024-03-27",
+      "time": "09:30",
+      "status": "scheduled",
+      "dentistName": "Dr. Roberto Lima"
+    },
+    {
+      "id": 10,
+      "patientId": 9,
+      "date": "2024-03-28",
+      "time": "14:30",
+      "status": "scheduled",
+      "dentistName": "Dr. Carlos Silva"
+    },
+    {
+      "id": 11,
+      "patientId": 10,
+      "date": "2024-03-29",
+      "time": "11:30",
+      "status": "scheduled",
+      "dentistName": "Dra. Ana Santos"
+    },
+    {
+      "id": 12,
+      "patientId": 2,
+      "date": "2024-04-01",
+      "time": "10:00",
+      "status": "scheduled",
+      "dentistName": "Dr. Roberto Lima"
+    },
+    {
+      "id": 13,
+      "patientId": 3,
+      "date": "2024-04-02",
+      "time": "15:00",
+      "status": "scheduled",
+      "dentistName": "Dr. Carlos Silva"
+    },
+    {
+      "id": 14,
+      "patientId": 4,
+      "date": "2024-04-03",
+      "time": "08:30",
+      "status": "scheduled",
+      "dentistName": "Dra. Ana Santos"
+    },
+    {
+      "id": 15,
+      "patientId": 5,
+      "date": "2024-04-04",
+      "time": "13:00",
+      "status": "scheduled",
+      "dentistName": "Dr. Roberto Lima"
+    }
+  ],
+  "treatments": [
+    {
+      "id": 1,
+      "patientId": 1,
+      "name": "Limpeza e Profilaxia",
+      "status": "approved",
+      "price": 250.00,
+      "createdAt": "2024-03-20"
+    },
+    {
+      "id": 2,
+      "patientId": 2,
+      "name": "Avaliação Ortodôntica",
+      "status": "in_progress",
+      "price": 150.00,
+      "createdAt": "2024-03-15"
+    },
+    {
+      "id": 3,
+      "patientId": 3,
+      "name": "Restauração em Resina",
+      "status": "approved",
+      "price": 350.00,
+      "createdAt": "2024-03-10"
+    },
+    {
+      "id": 4,
+      "patientId": 4,
+      "name": "Tratamento de Canal",
+      "status": "sent",
+      "price": 1200.00,
+      "createdAt": "2024-03-05"
+    },
+    {
+      "id": 5,
+      "patientId": 5,
+      "name": "Extração de Siso",
+      "status": "approved",
+      "price": 450.00,
+      "createdAt": "2024-03-01"
+    },
+    {
+      "id": 6,
+      "patientId": 6,
+      "name": "Clareamento Dental",
+      "status": "rejected",
+      "price": 800.00,
+      "createdAt": "2024-02-25"
+    },
+    {
+      "id": 7,
+      "patientId": 7,
+      "name": "Prótese Fixa",
+      "status": "in_progress",
+      "price": 2500.00,
+      "createdAt": "2024-02-20"
+    },
+    {
+      "id": 8,
+      "patientId": 8,
+      "name": "Implante Dentário",
+      "status": "sent",
+      "price": 3500.00,
+      "createdAt": "2024-02-15"
+    },
+    {
+      "id": 9,
+      "patientId": 9,
+      "name": "Gengivoplastia",
+      "status": "approved",
+      "price": 1500.00,
+      "createdAt": "2024-02-10"
+    },
+    {
+      "id": 10,
+      "patientId": 10,
+      "name": "Aplicação de Flúor",
+      "status": "approved",
+      "price": 120.00,
+      "createdAt": "2024-02-05"
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "name": "Juliana Lima",
+      "email": "juliana@odontotrack.com",
+      "role": "receptionist"
+    },
+    {
+      "id": 2,
+      "name": "Dr. Carlos Silva",
+      "email": "carlos@odontotrack.com",
+      "role": "dentist"
+    },
+    {
+      "id": 3,
+      "name": "Dra. Ana Santos",
+      "email": "ana@odontotrack.com",
+      "role": "dentist"
+    },
+    {
+      "id": 4,
+      "name": "Dr. Roberto Lima",
+      "email": "roberto@odontotrack.com",
+      "role": "dentist"
+    }
+  ]
+}

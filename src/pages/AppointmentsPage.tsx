@@ -1,17 +1,18 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, Plus, MoreHorizontal, Calendar, Clock, User, Filter, Download, Printer, Stethoscope, Lock } from 'lucide-react';
+import { Search, Plus, MoreHorizontal, Calendar, Clock, User, Filter, Download, Printer, Stethoscope, Lock, Edit2, Trash2, CheckCircle2 } from 'lucide-react';
 import { Card } from '../components/Card';
 import { Button } from '../components/Button';
 import { Input } from '../components/Input';
 import { Badge } from '../components/Badge';
+import { Dropdown } from '../components/Dropdown';
 import { useAuthStore } from '../store/useAuthStore';
 import { cn } from '../lib/utils';
 
 const mockAppointments = [
-  { id: '1', patient: 'Maria Oliveira', phone: '(11) 98765-4321', date: '20/03/2026', time: '09:00', dentist: 'Dr. Carlos Silva', status: 'Em Andamento' },
-  { id: '2', patient: 'João Pedro Santos', phone: '(11) 91234-5678', date: '20/03/2026', time: '10:30', dentist: 'Dra. Ana Santos', status: 'Em Andamento' },
-  { id: '3', patient: 'Ana Carolina Lima', phone: '(11) 95555-1234', date: '20/03/2026', time: '14:00', dentist: 'Dr. Roberto Lima', status: 'Em Andamento' },
+  { id: '1', patientId: '1', patient: 'Maria Oliveira', phone: '(11) 98765-4321', date: '20/03/2026', time: '09:00', dentist: 'Dr. Carlos Silva', status: 'Em Andamento' },
+  { id: '2', patientId: '2', patient: 'João Pedro Santos', phone: '(11) 91234-5678', date: '20/03/2026', time: '10:30', dentist: 'Dra. Ana Santos', status: 'Em Andamento' },
+  { id: '3', patientId: '3', patient: 'Ana Carolina Lima', phone: '(11) 95555-1234', date: '20/03/2026', time: '14:00', dentist: 'Dr. Roberto Lima', status: 'Em Andamento' },
 ];
 
 export const AppointmentsPage = () => {
@@ -79,7 +80,7 @@ export const AppointmentsPage = () => {
                         "flex items-center gap-3 group/name cursor-pointer",
                         isReceptionist && "opacity-60 cursor-not-allowed"
                       )}
-                      onClick={() => !isReceptionist && navigate('/tratamento-consultas')}
+                      onClick={() => !isReceptionist && navigate(`/pacientes/${item.patientId}`)}
                       title={isReceptionist ? "Acesso restrito ao Dentista" : ""}
                     >
                       <div className="w-10 h-10 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center group-hover/name:bg-indigo-100 transition-all">
@@ -115,9 +116,18 @@ export const AppointmentsPage = () => {
                     </Badge>
                   </td>
                   <td className="py-4 px-6 text-right">
-                    <button className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-all">
-                      <MoreHorizontal size={18} />
-                    </button>
+                    <Dropdown
+                      trigger={
+                        <button className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-all">
+                          <MoreHorizontal size={18} />
+                        </button>
+                      }
+                      items={[
+                        { label: 'Finalizar', icon: <CheckCircle2 size={14} />, onClick: () => console.log('Finish', item.id) },
+                        { label: 'Editar', icon: <Edit2 size={14} />, onClick: () => console.log('Edit', item.id) },
+                        { label: 'Cancelar', icon: <Trash2 size={14} />, onClick: () => console.log('Cancel', item.id), variant: 'danger' },
+                      ]}
+                    />
                   </td>
                 </tr>
               ))}

@@ -8,6 +8,7 @@ import { formatCurrency } from '../lib/utils';
 
 export const TreatmentFormPage = () => {
   const navigate = useNavigate();
+  const [patientId, setPatientId] = useState('2');
   const [procedures, setProcedures] = useState([
     { id: '1', name: 'Tratamento de Canal', tooth: '-', specialty: 'Endodontia', value: 800 },
     { id: '2', name: 'Extração Complexa', tooth: '-', specialty: 'Cirurgia', value: 350 },
@@ -16,11 +17,18 @@ export const TreatmentFormPage = () => {
 
   const totalValue = procedures.reduce((acc, curr) => acc + curr.value, 0);
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('Saving treatment plan:', { patientId, procedures, totalValue });
+    navigate('/tratamentos');
+  };
+
   return (
     <div className="max-w-5xl mx-auto space-y-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <button 
+            type="button"
             onClick={() => navigate(-1)}
             className="p-2 hover:bg-slate-100 rounded-full transition-colors text-slate-500"
           >
@@ -32,18 +40,22 @@ export const TreatmentFormPage = () => {
           </div>
         </div>
         <div className="flex p-1 bg-slate-200 rounded-xl">
-          <Button variant="ghost" size="sm" className="rounded-lg text-slate-600">Gerar uma consulta</Button>
-          <Button variant="primary" size="sm" className="rounded-lg">Gerar um tratamento</Button>
+          <Button type="button" variant="ghost" size="sm" className="rounded-lg text-slate-600">Gerar uma consulta</Button>
+          <Button type="button" variant="primary" size="sm" className="rounded-lg">Gerar um tratamento</Button>
         </div>
       </div>
 
-      <form className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-6">
         <Card title="Paciente">
           <div className="max-w-md">
             <label className="text-sm font-medium text-slate-700 mb-1.5 block">Selecione o paciente para o plano de tratamento</label>
             <div className="relative">
               <User className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
-              <select className="flex h-10 w-full rounded-lg border border-slate-300 bg-white pl-10 pr-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+              <select 
+                value={patientId}
+                onChange={(e) => setPatientId(e.target.value)}
+                className="flex h-10 w-full rounded-lg border border-slate-300 bg-white pl-10 pr-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              >
                 <option value="2">João Pedro Santos - 987.654.321-00</option>
                 <option value="1">Maria Oliveira - 123.456.789-00</option>
               </select>
@@ -125,7 +137,7 @@ export const TreatmentFormPage = () => {
           <Button type="button" variant="outline" onClick={() => navigate(-1)} className="gap-2">
             Cancelar
           </Button>
-          <Button type="button" variant="outline" className="gap-2">
+          <Button type="button" variant="outline" onClick={handleSubmit} className="gap-2">
             <FileText size={18} />
             Salvar Rascunho
           </Button>

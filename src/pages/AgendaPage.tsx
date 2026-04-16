@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Plus, User, Clock } from 'lucide-react';
 import { Card } from '../components/Card';
 import { Button } from '../components/Button';
@@ -22,11 +23,12 @@ const appointments = [
 ];
 
 export const AgendaPage = () => {
+  const navigate = useNavigate();
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-slate-900">Agenda</h1>
-        <Button className="gap-2">
+        <Button onClick={() => navigate('/consultas/novo')} className="gap-2">
           <Plus size={18} />
           Novo Agendamento
         </Button>

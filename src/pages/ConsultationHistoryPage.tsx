@@ -1,19 +1,18 @@
 import React from 'react';
-import { Search, Filter, Download, Printer, Calendar, Clock, User, MoreHorizontal, ChevronRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Search, Filter, Download, Printer, Calendar, Clock, User, MoreHorizontal, ChevronRight, FileText, Edit2, Trash2 } from 'lucide-react';
 import { Card } from '../components/Card';
 import { Button } from '../components/Button';
 import { Input } from '../components/Input';
 import { Badge } from '../components/Badge';
+import { Dropdown } from '../components/Dropdown';
 
-const mockHistory = [
-  { id: '1', date: '20/03/2026', time: '09:00', patient: 'Maria Oliveira', professional: 'Dr. Carlos Silva', procedure: 'Limpeza e Profilaxia', status: 'Finalizada' },
-  { id: '2', date: '19/03/2026', time: '14:30', patient: 'João Pedro Santos', professional: 'Dra. Ana Santos', procedure: 'Avaliação Ortodôntica', status: 'Finalizada' },
-  { id: '3', date: '18/03/2026', time: '10:00', patient: 'Ana Carolina Lima', professional: 'Dr. Roberto Lima', procedure: 'Restauração Resina', status: 'Finalizada' },
-  { id: '4', date: '17/03/2026', time: '16:00', patient: 'Lucas Ferreira', professional: 'Dr. Carlos Silva', procedure: 'Extração Simples', status: 'Finalizada' },
-  { id: '5', date: '15/03/2026', time: '11:00', patient: 'Beatriz Costa', professional: 'Dra. Ana Santos', procedure: 'Manutenção Aparelho', status: 'Finalizada' },
-];
+import { useAppointments } from '../hooks/useAppointments';
 
 export const ConsultationHistoryPage = () => {
+  const navigate = useNavigate();
+  const { data: appointments, isLoading } = useAppointments();
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -69,43 +68,63 @@ export const ConsultationHistoryPage = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-50">
-              {mockHistory.map((item) => (
-                <tr key={item.id} className="group hover:bg-slate-50 transition-colors">
-                  <td className="py-4 px-6">
-                    <div className="flex flex-col">
-                      <span className="text-sm font-semibold text-slate-900">{item.date}</span>
-                      <span className="text-xs text-slate-500 flex items-center gap-1">
-                        <Clock size={12} />
-                        {item.time}
-                      </span>
-                    </div>
-                  </td>
-                  <td className="py-4 px-6">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center border border-slate-200">
-                        <User size={14} />
-                      </div>
-                      <span className="text-sm font-medium text-slate-900">{item.patient}</span>
-                    </div>
-                  </td>
-                  <td className="py-4 px-6 text-sm text-slate-600">{item.professional}</td>
-                  <td className="py-4 px-6 text-sm text-slate-600">{item.procedure}</td>
-                  <td className="py-4 px-6">
-                    <Badge variant="success">{item.status}</Badge>
-                  </td>
-                  <td className="py-4 px-6 text-right">
-                    <div className="flex items-center justify-end gap-2">
-                      <Button variant="ghost" size="sm" className="text-indigo-600 gap-1">
-                        Ver Prontuário
-                        <ChevronRight size={14} />
-                      </Button>
-                      <button className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-all">
-                        <MoreHorizontal size={18} />
-                      </button>
-                    </div>
-                  </td>
+              {isLoading ? (
+                <tr>
+                  <td colSpan={6} className="py-8 text-center text-slate-500">Carregando histórico...</td>
                 </tr>
-              ))}
+              ) : (
+                appointments?.map((item) => (
+                  <tr key={item.id} className="group hover:bg-slate-50 transition-colors">
+                    <td className="py-4 px-6">
+                      <div className="flex flex-col">
+                        <span className="text-sm font-semibold text-slate-900">{item.date}</span>
+                        <span className="text-xs text-slate-500 flex items-center gap-1">
+                          <Clock size={12} />
+                          {item.time}
+                        </span>
+                      </div>
+                    </td>
+                    <td className="py-4 px-6">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center border border-slate-200">
+                          <User size={14} />
+                        </div>
+                        <span className="text-sm font-medium text-slate-900">{item.patientName}</span>
+                      </div>
+                    </td>
+                    <td className="py-4 px-6 text-sm text-slate-600">{item.dentistName || 'Dr. Carlos Silva'}</td>
+                    <td className="py-4 px-6 text-sm text-slate-600">{item.type || 'Consulta'}</td>
+                    <td className="py-4 px-6">
+                      <Badge variant={item.status === 'Finalizada' ? 'success' : 'warning'}>{item.status}</Badge>
+                    </td>
+                    <td className="py-4 px-6 text-right">
+                      <div className="flex items-center justify-end gap-2">
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          className="text-indigo-600 gap-1"
+                          onClick={() => navigate(`/pacientes/${item.patientId}`)}
+                        >
+                          Ver Prontuário
+                          <ChevronRight size={14} />
+                        </Button>
+                        <Dropdown
+                          trigger={
+                            <button className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-all">
+                              <MoreHorizontal size={18} />
+                            </button>
+                          }
+                          items={[
+                            { label: 'Ver Prontuário', icon: <FileText size={14} />, onClick: () => navigate(`/pacientes/${item.patientId}`) },
+                            { label: 'Editar Registro', icon: <Edit2 size={14} />, onClick: () => console.log('Edit', item.id) },
+                            { label: 'Excluir', icon: <Trash2 size={14} />, onClick: () => console.log('Delete', item.id), variant: 'danger' },
+                          ]}
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>

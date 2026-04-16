@@ -33,7 +33,6 @@ const menuItems = [
     title: 'Gestão Interna',
     items: [
       { name: 'Histórico Geral', icon: History, path: '/historico', roles: ['dentist'] },
-      { name: 'Tratamento e Consultas', icon: ClipboardList, path: '/tratamento-consultas', roles: ['dentist'] },
       { name: 'Equipe Clínica', icon: UserRound, path: '/equipe', roles: ['dentist'] },
     ],
   },

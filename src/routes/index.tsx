@@ -12,7 +12,7 @@ import { AppointmentsPage } from '../pages/AppointmentsPage';
 import { AgendaPage } from '../pages/AgendaPage';
 import { StaffPage } from '../pages/StaffPage';
 import { ConsultationHistoryPage } from '../pages/ConsultationHistoryPage';
-import { TreatmentConsultationDetailsPage } from '../pages/TreatmentConsultationDetailsPage';
+import { PatientDetailsPage } from '../pages/PatientDetailsPage';
 import { ProtectedRoute } from '../components/ProtectedRoute';
 
 // Placeholder pages for other routes
@@ -48,7 +48,7 @@ export const AppRoutes = () => {
           
           {/* Gestão Interna */}
           <Route path="/historico" element={<ProtectedRoute allowedRoles={['dentist']}><ConsultationHistoryPage /></ProtectedRoute>} />
-          <Route path="/tratamento-consultas" element={<ProtectedRoute allowedRoles={['dentist']}><TreatmentConsultationDetailsPage /></ProtectedRoute>} />
+          <Route path="/pacientes/:id" element={<ProtectedRoute allowedRoles={['dentist']}><PatientDetailsPage /></ProtectedRoute>} />
           <Route path="/equipe" element={<ProtectedRoute allowedRoles={['dentist']}><StaffPage /></ProtectedRoute>} />
           
           {/* Financeiro */}

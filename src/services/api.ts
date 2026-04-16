@@ -50,13 +50,52 @@ let localMockData: any = null;
 
 const getLocalMockData = async () => {
   if (!localMockData) {
-    const data = await import('../mocks/data');
+    const data = await import('../mocks/odontotrack-db.json');
+    
+    // Enrich data to match app types
+    const enrichedPatients = data.patients.map((p: any) => ({
+      ...p,
+      id: String(p.id),
+      gender: 'Feminino', // Default for mock
+      address: { cep: '00000-000', street: 'Rua Exemplo', number: '123', city: 'Cidade', state: 'UF' },
+      medicalHistory: '',
+      observations: '',
+    }));
+
+    const enrichedAppointments = data.appointments.map((a: any) => {
+      const patient = enrichedPatients.find((p: any) => p.id === String(a.patientId));
+      return {
+        ...a,
+        id: String(a.id),
+        patientId: String(a.patientId),
+        patientName: patient?.name || 'Paciente Desconhecido',
+        dentistId: 'd1',
+        type: 'Consulta',
+        status: a.status === 'scheduled' ? 'Agendada' : a.status === 'in_progress' ? 'Em andamento' : 'Finalizada',
+      };
+    });
+
+    const enrichedTreatments = data.treatments.map((t: any) => {
+      const patient = enrichedPatients.find((p: any) => p.id === String(t.patientId));
+      return {
+        ...t,
+        id: String(t.id),
+        patientId: String(t.patientId),
+        patientName: patient?.name || 'Paciente Desconhecido',
+        description: t.name,
+        value: t.price,
+        date: t.createdAt,
+        status: t.status === 'approved' ? 'Aprovado' : t.status === 'in_progress' ? 'Em andamento' : t.status === 'sent' ? 'Enviado' : 'Reprovado',
+        procedures: [{ name: t.name, specialty: 'Geral', value: t.price }],
+      };
+    });
+
     localMockData = {
-      patients: [...data.mockPatients],
-      appointments: [...data.mockAppointments],
-      treatments: [...data.mockTreatments],
-      staff: [...data.mockStaff],
-      financial: [...data.mockFinancial],
+      patients: enrichedPatients,
+      appointments: enrichedAppointments,
+      treatments: enrichedTreatments,
+      staff: data.users.map((u: any) => ({ ...u, id: String(u.id), phone: '(00) 00000-0000' })),
+      financial: [],
     };
   }
   return localMockData;
